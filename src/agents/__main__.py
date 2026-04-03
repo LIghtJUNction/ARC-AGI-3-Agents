@@ -1,9 +1,3 @@
-# ruff: noqa: E402
-from dotenv import load_dotenv
-
-load_dotenv(dotenv_path=".env.example")
-load_dotenv(dotenv_path=".env", override=True)
-
 import argparse
 import json
 import logging
@@ -15,10 +9,13 @@ from functools import partial
 from types import FrameType
 
 import requests
+from dotenv import load_dotenv
 
 from agents import AVAILABLE_AGENTS, Swarm
 from agents.tracing import initialize as init_agentops
 
+load_dotenv(dotenv_path=".env.example")
+load_dotenv(dotenv_path=".env", override=True)
 logger = logging.getLogger()
 
 SCHEME = os.environ.get("SCHEME", "http")
