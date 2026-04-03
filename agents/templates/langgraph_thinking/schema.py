@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Annotated, Optional, TypedDict
+from typing import Annotated, TypedDict
 
 from arcengine import FrameData, GameAction
 from langchain_core.messages import BaseMessage
@@ -12,7 +12,7 @@ class LLM(Enum):
 class AgentState(TypedDict):
     """State for the LangGraph workflow."""
 
-    action: Optional[GameAction]
+    action: GameAction | None
 
     context: list[BaseMessage]
     """Additional context build up by the agent. Passed to the thinking node."""
@@ -21,7 +21,7 @@ class AgentState(TypedDict):
 
     frames: list[FrameData]
     latest_frame: FrameData
-    previous_frame: Optional[FrameData]
+    previous_frame: FrameData | None
     llm: LLM
     thoughts: list[str]
 

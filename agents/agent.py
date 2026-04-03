@@ -3,7 +3,7 @@ import logging
 import os
 import time
 from abc import ABC, abstractmethod
-from typing import Any, Optional
+from typing import Any
 
 from arc_agi import EnvironmentWrapper
 from arc_agi.scorecard import EnvironmentScorecard
@@ -47,7 +47,7 @@ class Agent(ABC):
         ROOT_URL: str,
         record: bool,
         arc_env: EnvironmentWrapper,
-        tags: Optional[list[str]] = None,
+        tags: list[str] | None = None,
     ) -> None:
         self.ROOT_URL = ROOT_URL
         self.card_id = card_id
@@ -154,7 +154,7 @@ class Agent(ABC):
         )
         return out
 
-    def take_action(self, action: GameAction) -> Optional[FrameData]:
+    def take_action(self, action: GameAction) -> FrameData | None:
         """Submits the specific action and gets the next frame."""
         frame_data = self.do_action_request(action)
         try:
@@ -164,7 +164,7 @@ class Agent(ABC):
             return None
         return frame
 
-    def cleanup(self, scorecard: Optional[EnvironmentScorecard] = None) -> None:
+    def cleanup(self, scorecard: EnvironmentScorecard | None = None) -> None:
         """Called after main loop is finished."""
         if self._cleanup:
             self._cleanup = False  # only cleanup once per agent

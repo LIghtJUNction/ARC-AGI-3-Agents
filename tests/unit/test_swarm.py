@@ -2,8 +2,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 import requests
-
 from agents.structs import Card, GameState, Scorecard
+
 from agents.swarm import Swarm
 from agents.templates.random_agent import Random
 

@@ -16,8 +16,8 @@ from .templates.smolagents import SmolCodingAgent, SmolVisionAgent
 
 load_dotenv()
 
-AVAILABLE_AGENTS: dict[str, Type[Agent]] = {
-    cls.__name__.lower(): cast(Type[Agent], cls)
+AVAILABLE_AGENTS: dict[str, type[Agent]] = {
+    cls.__name__.lower(): cast(type[Agent], cls)
     for cls in Agent.__subclasses__()
     if cls.__name__ != "Playback"
 }

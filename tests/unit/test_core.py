@@ -1,5 +1,4 @@
 import pytest
-
 from agents.structs import (
     ActionInput,
     Card,
@@ -8,6 +7,7 @@ from agents.structs import (
     GameState,
     Scorecard,
 )
+
 from agents.templates.langgraph_random_agent import LangGraphRandom
 from agents.templates.random_agent import Random
 

@@ -7,8 +7,9 @@ import json
 import logging
 import os
 import re
+from collections.abc import Sequence
 from textwrap import dedent
-from typing import Any, List, Optional, Sequence, Tuple
+from typing import Any
 
 import numpy as np
 import openai
@@ -22,7 +23,7 @@ from ..agent import Agent
 logger = logging.getLogger()
 
 # 16-color palette (RGBA, hex -> tuple)
-_PALETTE: List[tuple[int, int, int, int]] = [
+_PALETTE: list[tuple[int, int, int, int]] = [
     (0xFF, 0xFF, 0xFF, 0xFF),  # 0 White
     (0xCC, 0xCC, 0xCC, 0xFF),  # 1 Off-white
     (0x99, 0x99, 0x99, 0xFF),  # 2 Neutral light
@@ -92,7 +93,7 @@ def make_image_block(b64_string: str) -> dict[str, Any]:
 def image_diff(
     img_a: Image.Image,
     img_b: Image.Image,
-    highlight_rgb: Tuple[int, int, int] = (255, 0, 0),  # red
+    highlight_rgb: tuple[int, int, int] = (255, 0, 0),  # red
 ) -> Image.Image:
     """
     Compare img_a vs img_b (any common format), write a visual diff.
@@ -184,7 +185,7 @@ class MultiModalLLM(Agent):
     MODEL: str = "gpt-4o-mini"
     # MODEL: str = "nectarine-alpha-new-reasoning-effort-2025-07-25"
     # MODEL: str = "o3-high"
-    REASONING_EFFORT: Optional[str] = None
+    REASONING_EFFORT: str | None = None
     MODEL_REQUIRES_TOOLS: bool = False
 
     SYSTEM_PROMOT = dedent("""\
@@ -274,7 +275,7 @@ class MultiModalLLM(Agent):
     _memory_prompt = ""
     _previous_prompt = ""
     _previous_action = ""
-    _previous_images: List[Image.Image] = []
+    _previous_images: list[Image.Image] = []
     _previous_score = 0
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -297,7 +298,7 @@ class MultiModalLLM(Agent):
         """).strip()
         _previous_prompt = ""
         _previous_action = ""
-        _previous_images: List[Image.Image] = []
+        _previous_images: list[Image.Image] = []
         _previous_score = 0
 
     @property

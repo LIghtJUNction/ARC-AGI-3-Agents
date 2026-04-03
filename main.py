@@ -13,7 +13,6 @@ import sys
 import threading
 from functools import partial
 from types import FrameType
-from typing import Optional
 
 import requests
 
@@ -46,8 +45,8 @@ def run_agent(swarm: Swarm) -> None:
 
 def cleanup(
     swarm: Swarm,
-    signum: Optional[int],
-    frame: Optional[FrameType],
+    signum: int | None,
+    frame: FrameType | None,
 ) -> None:
     logger.info("Received SIGINT, exiting...")
     card_id = swarm.card_id

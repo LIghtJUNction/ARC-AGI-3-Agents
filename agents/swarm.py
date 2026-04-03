@@ -4,7 +4,7 @@ import json
 import logging
 import os
 from threading import Thread
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING
 
 from arc_agi import Arcade, OperationMode
 from arc_agi.scorecard import EnvironmentScorecard
@@ -22,13 +22,13 @@ class Swarm:
     ROOT_URL: str
     COUNT: int
     agent_name: str
-    agent_class: Type[Agent]
+    agent_class: type[Agent]
     threads: list[Thread]
     agents: list[Agent]
     record_games: list[str]
     cleanup_threads: list[Thread]
     headers: dict[str, str]
-    card_id: Optional[str]
+    card_id: str | None
     _arc: Arcade
 
     def __init__(
@@ -122,12 +122,12 @@ class Swarm:
     def open_scorecard(self) -> str:
         return self._arc.open_scorecard(tags=self.tags)  # type: ignore[no-any-return]
 
-    def close_scorecard(self, card_id: str) -> Optional[EnvironmentScorecard]:
+    def close_scorecard(self, card_id: str) -> EnvironmentScorecard | None:
         self.card_id = None
 
         return self._arc.close_scorecard(card_id)
 
-    def cleanup(self, scorecard: Optional[EnvironmentScorecard] = None) -> None:
+    def cleanup(self, scorecard: EnvironmentScorecard | None = None) -> None:
         """Cleanup all agents."""
         for a in self.agents:
             a.cleanup(scorecard)

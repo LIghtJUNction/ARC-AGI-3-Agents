@@ -191,7 +191,7 @@ class SmolCodingAgent(LLM, Agent):
     def build_initial_prompt(self, latest_frame: FrameData) -> str:
         """Customize this method to provide instructions to the LLM."""
         return textwrap.dedent(
-            """
+            f"""
 # CONTEXT:
 You are an agent playing an unknown dynamic game. Your objective is to
 WIN and avoid GAME_OVER while minimizing actions.
@@ -202,42 +202,33 @@ INT<0,15> values.
 
 
 # Initial Game State:
-Current State: {state}
-Current Score: {score}
+Current State: {latest_frame.state.name}
+Current Score: {latest_frame.score}
 
 # Initial Frame:
-{frame}
+{self.pretty_print_3d(latest_frame.frame)}
 
 # INSTRUCTIONS:
 First explore the game by taking actions and then determine the best strategy to WIN the game.
 Use the available tools to take actions in the game. The game is already reset, so you can start taking other actions.
-        """.format(
-                state=latest_frame.state.name,
-                score=latest_frame.score,
-                frame=self.pretty_print_3d(latest_frame.frame),
-            )
+        """
         )
 
     def build_func_resp_prompt(self, latest_frame: FrameData) -> str:
         return textwrap.dedent(
-            """
+            f"""
 # Game State:
-{state}
+{latest_frame.state.name}
 
 # Score:
-{score}
+{latest_frame.score}
 
 # Action Count:
-{action_count}
+{len(self.frames)}
 
 # Current Frame:
-{frame}
-        """.format(
-                state=latest_frame.state.name,
-                score=latest_frame.score,
-                action_count=len(self.frames),
-                frame=self.pretty_print_3d(latest_frame.frame),
-            )
+{self.pretty_print_3d(latest_frame.frame)}
+        """
         )
 
 
@@ -456,21 +447,18 @@ class SmolVisionAgent(LLM, Agent):
     def build_initial_prompt(self, latest_frame: FrameData) -> str:
         """Customize this method to provide instructions to the LLM."""
         return textwrap.dedent(
-            """
+            f"""
 # CONTEXT:
 You are an agent playing an unknown dynamic game by looking at images of the game. Your objective is to WIN and avoid GAME_OVER while never giving up.
 You will be given an image of the current game state. You must call a tool to perform an action that updates the game state. The tool will return a description of the new game state.
 
 # Initial Game State:
-Current State: {state}
-Current Score: {score}
+Current State: {latest_frame.state.name}
+Current Score: {latest_frame.score}
 
 # INSTRUCTIONS:
 You can see the game state in the image. Analyze the image and the game state, then decide on the best action to take. The game is already reset, so you can start taking other actions.
 # TURN:
 Call exactly one action.
-        """.format(
-                state=latest_frame.state.name,
-                score=latest_frame.score,
-            )
+        """
         )

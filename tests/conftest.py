@@ -2,7 +2,6 @@ import os
 import shutil
 
 import pytest
-
 from agents.structs import FrameData, GameState
 
 
@@ -21,7 +20,7 @@ def clean_test_recordings():
         shutil.rmtree(test_recordings_dir)
     os.makedirs(test_recordings_dir, exist_ok=True)
 
-    yield test_recordings_dir
+    return test_recordings_dir
 
 
 @pytest.fixture

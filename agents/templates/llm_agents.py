@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import textwrap
-from typing import Any, Optional
+from typing import Any
 
 import openai
 from arcengine import FrameData, GameAction, GameState
@@ -18,7 +18,7 @@ class LLM(Agent):
 
     MAX_ACTIONS: int = 80
     DO_OBSERVATION: bool = True
-    REASONING_EFFORT: Optional[str] = None
+    REASONING_EFFORT: str | None = None
     MODEL_REQUIRES_TOOLS: bool = False
 
     MESSAGE_LIMIT: int = 10
@@ -339,23 +339,19 @@ class LLM(Agent):
 
     def build_func_resp_prompt(self, latest_frame: FrameData) -> str:
         return textwrap.dedent(
-            """
+            f"""
 # State:
-{state}
+{latest_frame.state.name}
 
 # Score:
-{score}
+{latest_frame.levels_completed}
 
 # Frame:
-{latest_frame}
+{self.pretty_print_3d(latest_frame.frame)}
 
 # TURN:
 Reply with a few sentences of plain-text strategy observation about the frame to inform your next action.
-        """.format(
-                latest_frame=self.pretty_print_3d(latest_frame.frame),
-                score=latest_frame.levels_completed,
-                state=latest_frame.state.name,
-            )
+        """
         )
 
     def build_user_prompt(self, latest_frame: FrameData) -> str:

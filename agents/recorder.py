@@ -1,8 +1,8 @@
 import json
 import os
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Optional
+from datetime import UTC, datetime
+from typing import Any
 
 RECORDING_SUFFIX = ".recording.jsonl"
 
@@ -14,7 +14,7 @@ def get_recordings_dir() -> str:
 
 class Recorder:
     def __init__(
-        self, prefix: str, filename: Optional[str] = None, guid: Optional[str] = None
+        self, prefix: str, filename: str | None = None, guid: str | None = None
     ) -> None:
         self.guid = self.get_guid(filename) if filename else (guid or str(uuid.uuid4()))
         self.prefix: str = prefix
@@ -37,7 +37,7 @@ class Recorder:
         `data` should be a dictionary (JSON-serializable) or a JSON string.
         """
         event: dict[str, Any] = {}
-        event["timestamp"] = datetime.now(timezone.utc).isoformat()
+        event["timestamp"] = datetime.now(UTC).isoformat()
         event["data"] = data
 
         with open(self.filename, "a", encoding="utf-8") as f:
@@ -52,7 +52,7 @@ class Recorder:
             return []
 
         events: list[dict[str, Any]] = []
-        with open(self.filename, "r", encoding="utf-8") as f:
+        with open(self.filename, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if line:

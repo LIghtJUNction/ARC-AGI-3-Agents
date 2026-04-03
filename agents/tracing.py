@@ -2,7 +2,8 @@
 
 import functools
 import logging
-from typing import TYPE_CHECKING, Any, Callable, Optional
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from .agent import Agent
@@ -10,7 +11,7 @@ if TYPE_CHECKING:
 # Module-level variables
 logger = logging.getLogger()
 is_initialized = False
-agentops_client: Optional[Any] = None
+agentops_client: Any | None = None
 
 
 class NoOpAgentOps:
@@ -48,7 +49,7 @@ except ImportError:
 
 
 def initialize(
-    api_key: Optional[str] = None, log_level: Optional[int] = logging.INFO
+    api_key: str | None = None, log_level: int | None = logging.INFO
 ) -> None:
     """Initialize the AgentOps SDK with an optional API key.
 

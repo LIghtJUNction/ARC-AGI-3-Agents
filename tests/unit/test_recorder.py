@@ -67,7 +67,7 @@ class TestRecorderFileOperations:
 
         assert os.path.exists(recorder.filename)
 
-        with open(recorder.filename, "r") as f:
+        with open(recorder.filename) as f:
             line = f.readline().strip()
             event = json.loads(line)
 

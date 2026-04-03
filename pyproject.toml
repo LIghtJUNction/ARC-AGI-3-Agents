@@ -42,4 +42,11 @@ exclude = [
 plugins = []
 
 [tool.ruff.lint]
-extend-select = ["I"]
+extend-select = [
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "SIM",  # flake8-simplify
+    "UP",   # pyupgrade
+    "PT",   # flake8-pytest-style
+]
